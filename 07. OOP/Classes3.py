@@ -17,11 +17,12 @@ class Priest(Healer):
 
     def bloodlust(self):
         if self.is_dps():
+            print(self.damage * 1.3)
             return self.damage * 1.3
         else:
+            print(self.mana * 1.3)
             return self.mana * 1.3
 
 
-shadow = Priest(100, 250, 60, 80)
-shadow.is_dps()
+shadow = Priest(100, 250, 60)
 shadow.bloodlust()
