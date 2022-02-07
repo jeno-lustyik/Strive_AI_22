@@ -43,4 +43,40 @@ for i in range(0, 10, 2):
 
 forecast.iloc[1, :] = conditions
 
+highs = []
+high = driver.find_elements_by_xpath('//*[@class="temp temp-high"]')
+
+for i in range(len(high)):
+    highs.append(high[i].text)
+h = []
+
+for i in highs:
+    n = ''
+    for k in i:
+        if k.isdigit():
+            n += k
+    h.append(round((int(n)-32)*5/9, ndigits=0))
+highs = h
+forecast.iloc[2, :] = highs
+
+lows = []
+low = driver.find_elements_by_xpath('//*[@class="temp temp-low"]')
+
+for i in range(len(low)):
+    lows.append(low[i].text)
+l = []
+
+for i in lows:
+    n = ''
+    for k in i:
+        if k.isdigit():
+            n += k
+    l.append(round((int(n)-32)*5/9, ndigits=0))
+lows = l
+if len(lows) < len(day_name):
+    lows.append(np.nan)
+
+forecast.iloc[3, :] = lows
+forecast.to_excel('Weather_Forecast_Easy.xlsx')
 print(forecast)
+
