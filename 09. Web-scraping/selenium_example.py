@@ -10,7 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 ##############READ TO USE AN ADBLOCKER
 
 page = "https://forecast.weather.gov/MapClick.php?lat=37.777120000000025&lon=-122.41963999999996"
-my_driver = ("./chromedriver.exe")
+my_driver = (r"D:\Users\lusty\Strive\GitHub\Strive_AI_22\09. Web-scraping\chromedriver.exe")
 
 
 driver = webdriver.Chrome(my_driver)
