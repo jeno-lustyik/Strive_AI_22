@@ -24,10 +24,23 @@ for i in range(0, 10, 2):
 row = ['Date', 'Conditions', 'High', 'Low']
 
 forecast = pd.DataFrame(columns=days, index=row)
-
+#Get todays date into the dataframe
 today_date = driver.find_element_by_xpath('//*[@id="about_forecast"]/div[2]/div[2]')
 today_date = today_date.text
-# for i in range(0, 10, 2):
-forecast.iloc[0, 0] = today_date
+today_date = today_date.split()
+y = int(today_date[-1])
+m = today_date[-3]
+d = int(today_date[-2].replace(',',''))
+
+print(today_date)
+for i in range(0, 5, 1):
+    forecast.iloc[0, i] = f'{d+i}/{m}/{y}'
+
+conditions = []
+cond = box.find_elements_by_xpath('//*[@class="col-sm-10 forecast-text"]')
+for i in range(0, 10, 2):
+    conditions.append(cond[i].text)
+
+forecast.iloc[1, :] = conditions
 
 print(forecast)
