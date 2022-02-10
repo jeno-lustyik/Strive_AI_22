@@ -4,7 +4,6 @@ import numpy as np
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-import datetime
 
 # Set up driver, and get the target URL to load in browser
 
