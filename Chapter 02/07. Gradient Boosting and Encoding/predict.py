@@ -1,5 +1,5 @@
+from train import model
 
-model = ""
 while True:
 
     age = int(input("How old are you? \n"))
@@ -10,4 +10,5 @@ while True:
     predict
     
     '''
-    print("You are too fucked up 1 milly")
+    prediction = model.predict([[age, child, smoke]])
+    print(prediction)
