@@ -27,21 +27,6 @@ data = pd.read_csv(r'data\london_merged.csv')
 
 np.random.seed(0)
 
-#target = data['cnt']
-#data = data.drop(['cnt'], axis=1)
-
-#Print data shape
-#print(target.shape)
-#print(data.shape)
-
-#Take a look at nulls 0 nulls
-#print(target.isnull().sum())
-#print(data.isnull().sum())
-
-#lets create a 2 new feautures
-# Hour time stamp contains the year and the month,
-# we will create different columns for each one
-
 data['year'] = data['timestamp'].apply(lambda row: row[:4])
 data['month'] = data['timestamp'].apply(lambda row: row.split('-')[2][:2] )
 data['hour'] = data['timestamp'].apply(lambda row: row.split(':')[0][-2:] )
@@ -60,17 +45,17 @@ def data_enhancement(data):
     gen_data = data
     
     for season in data['season'].unique():
-        seasonal_data =  gen_data[gen_data['season'] == season]
-        hum_std = seasonal_data['hum'].std()
-        wind_speed_std = seasonal_data['wind_speed'].std()
-        t1_std = seasonal_data['t1'].std()
-        t2_std = seasonal_data['t2'].std()
+        seasonal_data = gen_data[gen_data['season'] == season]
+        hum_mean = seasonal_data['hum'].mean()
+        wind_speed_std = seasonal_data['wind_speed'].mean()
+        t1_mean = seasonal_data['t1'].mean()
+        t2_mean = seasonal_data['t2'].mean()
         
         for i in gen_data[gen_data['season'] == season].index:
             if np.random.randint(2) == 1:
-                gen_data['hum'].values[i] += hum_std/10
+                gen_data['hum'].values[i] += hum_mean/10
             else:
-                gen_data['hum'].values[i] -= hum_std/10
+                gen_data['hum'].values[i] -= hum_mean/10
                 
             if np.random.randint(2) == 1:
                 gen_data['wind_speed'].values[i] += wind_speed_std/10
@@ -78,14 +63,14 @@ def data_enhancement(data):
                 gen_data['wind_speed'].values[i] -= wind_speed_std/10
                 
             if np.random.randint(2) == 1:
-                gen_data['t1'].values[i] += t1_std/10
+                gen_data['t1'].values[i] += t1_mean/10
             else:
-                gen_data['t1'].values[i] -= t1_std/10
+                gen_data['t1'].values[i] -= t1_mean/10
                 
             if np.random.randint(2) == 1:
-                gen_data['t2'].values[i] += t2_std/10
+                gen_data['t2'].values[i] += t2_mean/10
             else:
-                gen_data['t2'].values[i] -= t2_std/10
+                gen_data['t2'].values[i] -= t2_mean/10
 
     return gen_data
 
@@ -93,18 +78,8 @@ print(data.head(3))
 gen = data_enhancement(data)
 print(gen.head(3) )
 
-#print(gen.shape)
-
-#final_data = data
 y = data['cnt']
 x = data.drop(['cnt'], axis=1)
-
-
-
-#print(data.shape)
-
-
-
 
 cat_vars = ['season','is_weekend','is_holiday','year','month','weather_code']
 num_vars = ['t1','t2','hum','wind_speed']
@@ -154,7 +129,7 @@ tree_classifiers = {
   "LightGBM":      LGBMRegressor(n_estimators=100),
   "CatBoost":      CatBoostRegressor(n_estimators=100),
 }
-### END SOLUTIONv
+
 
 tree_classifiers = {name: pipeline.make_pipeline(tree_prepro, model) for name, model in tree_classifiers.items()}
 
@@ -174,6 +149,8 @@ for model_name, model in tree_classifiers.items():
                               " % error": metrics.mean_squared_error(y_val, pred) / rang,
                               "Time":     total_time},
                               ignore_index=True)
+
+
 ### END SOLUTION
 
 
