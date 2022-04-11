@@ -30,12 +30,12 @@ train = []
 test = []
 
 for epoch in range(epochs):
-    optimizer.zero_grad()
     x_train_batch, x_test_batch, y_train_batch, y_test_batch = dh.to_batches(x_train, x_test, y_train, y_test, 7)
     running_loss = 0
     running_loss_test = 0
 
     for n in range(x_train_batch.shape[0]):
+        optimizer.zero_grad()
         pred = model.forward(x_train_batch[n])
         loss = criterion(pred, y_train_batch[n])
 
