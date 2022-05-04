@@ -20,6 +20,7 @@ class Recurrent_Net(nn.Module):
 
         _, h_n = self.rnn(x, h_0)
         last_hidden = h_n[-1]
+        print(last_hidden.shape)
         out = F.relu(self.fc(last_hidden))
 
         return out

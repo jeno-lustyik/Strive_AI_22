@@ -74,7 +74,7 @@ def next_stock_batch(batch_size, n_steps, df_base):
 
 df_train, df_test = train_test_split(df)
 
-iters = 5
+iters = 30
 
 n_layers = 100
 in_size = 8
@@ -84,7 +84,7 @@ seq_len = 20
 
 model = Recurrent_Net(in_size, hid_size, n_layers, batch_size, seq_len)
 criterion = nn.MSELoss()
-optim = torch.optim.SGD(model.parameters(), lr=0.003)
+optim = torch.optim.SGD(model.parameters(), lr=0.03)
 
 train = []
 test = []
