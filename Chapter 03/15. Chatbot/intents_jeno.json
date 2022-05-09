@@ -105,6 +105,18 @@
         "Yeah, it's great! What class do you play?",
         "Love it! Although, I enjoy Path of Exile better."
       ]
+    },
+    {
+      "tag": "warrior",
+      "patterns": [
+        "I always play Warrior. They are great!",
+        "Heavy plate armor, big swords, axes, and raging.",
+        "Is World of Warcraft a good game?"
+      ],
+      "responses": [
+        "Yeah, it's great! What class do you play?",
+        "Love it! Although, I enjoy Path of Exile better."
+      ]
     }
   ]
 }
