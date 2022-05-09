@@ -109,13 +109,26 @@
     {
       "tag": "warrior",
       "patterns": [
-        "I always play Warrior. They are great!",
-        "Heavy plate armor, big swords, axes, and raging.",
-        "Is World of Warcraft a good game?"
+        "I always play Warrior, they are great!",
+        "The one with heavy plate armor, big swords, axes, and raging.",
+        "Playing Warrior makes me happy."
       ],
       "responses": [
-        "Yeah, it's great! What class do you play?",
-        "Love it! Although, I enjoy Path of Exile better."
+        "Woah, a fellow Warrior! BASED.",
+        "Bruh, they are so overpowered...",
+        "Ew, no thanks, I prefer Mages."
+      ]
+    },
+    {
+      "tag": "demon hunter",
+      "patterns": [
+        "You are not prepared to hear my answer: demon hunter.",
+        "I like gliding, eye beam and my cool demon form."
+      ],
+      "responses": [
+        "I am my scars!",
+        "Geez, they are so annoying...",
+        "Ew, no thanks, I prefer Mages."
       ]
     }
   ]
