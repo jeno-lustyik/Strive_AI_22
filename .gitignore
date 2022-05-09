@@ -115,3 +115,4 @@ dmypy.json
 Chapter 02/11. Images/train.csv
 Chapter 02/11. Images/img_csv
 Chapter 02/11. Images/train
+*.vec
