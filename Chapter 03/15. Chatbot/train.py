@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import json
 
@@ -42,7 +44,7 @@ print(len(all_words), "unique stemmed words")
 X_train = []
 Y_train = []
 
-for(pattern_sentence, tag) in patterns:
+for (pattern_sentence, tag) in patterns:
     bag = bag_of_words(pattern_sentence, all_words)
     X_train.append(bag)
     label = tags.index(tag)
@@ -51,12 +53,15 @@ for(pattern_sentence, tag) in patterns:
 X_train = np.array(X_train)
 Y_train = np.array(Y_train)
 
-num_epoches = 650
+num_epoches = 3000
 batch_size = 8
-learning_rate = 0.001
+learning_rate = 0.1
 input_size = len(X_train[0])
-hidden_size = 40
+hid_size = 8
+n_layers = 100
 output_size = len(tags)
+embedding_dim = 8
+
 
 class ChatData(Dataset):
 
@@ -71,6 +76,7 @@ class ChatData(Dataset):
     def __len__(self):
         return self.n_samples
 
+
 dataset = ChatData()
 train_loader = DataLoader(dataset=dataset,
                           batch_size=batch_size,
@@ -79,35 +85,40 @@ train_loader = DataLoader(dataset=dataset,
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model = NeuralNet(input_size, hidden_size, output_size).to(device)
 
+
+
+model = NeuralNet(embedding_dim, hid_size, input_size, output_size).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 
 for epoch in range(num_epoches):
     for (words, labels) in train_loader:
-        words = words.to(device)
+        words = words.to(dtype=torch.long).to(device)
         labels = labels.to(dtype=torch.long).to(device)
 
         outputs = model(words)
-
-        loss = criterion(outputs, labels)
+        output = nn.functional.softmax(outputs, dim=1)
+        loss = criterion(output, labels)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+    scheduler.step()
 
-    if(epoch+1) % 100 == 0:
-        print(f'Epoch [{epoch+1}/{num_epoches}], Loss: {loss.item():.4f}')
+    if (epoch + 1) % 100 == 0:
+        print(f'Epoch [{epoch + 1}/{num_epoches}], Loss: {loss.item():.4f}')
 
 print(f'final loss: {loss.item():.4f}')
 
 data = {
     "model_state": model.state_dict(),
     "input_size": input_size,
-    "hidden_size": hidden_size,
+    "hid_size": hid_size,
     "output_size": output_size,
     "all_words": all_words,
-    "tags": tags
+    "tags": tags,
+    "embed_size": embedding_dim
 }
 
 file = "trained.pth"
